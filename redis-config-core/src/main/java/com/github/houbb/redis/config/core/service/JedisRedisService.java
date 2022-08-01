@@ -5,6 +5,7 @@ import com.github.houbb.redis.config.core.constant.JedisConst;
 import com.github.houbb.redis.config.core.exception.RedisConfigException;
 import com.github.houbb.redis.config.core.jedis.IJedisService;
 import com.github.houbb.redis.config.core.utils.TimeoutUtils;
+import redis.clients.jedis.Jedis;
 
 import java.util.concurrent.TimeUnit;
 
@@ -26,31 +27,46 @@ public class JedisRedisService implements IRedisService {
 
     @Override
     public void set(String key, String value) {
-        String result = jedisService.getJedis().set(key, value);
+        String result = getJedis().set(key, value);
         checkResult(result);
     }
 
     @Override
+    public void set(String key, String value, long expireMills) {
+        this.set(key, value);
+        this.expire(key, expireMills, TimeUnit.MILLISECONDS);
+    }
+
+    @Override
     public String get(String key) {
-        return jedisService.getJedis().get(key);
+        return getJedis().get(key);
+    }
+
+    @Override
+    public boolean contains(String key) {
+        return getJedis().exists(key);
     }
 
     @Override
     public void expire(String key, long expireTime, TimeUnit timeUnit) {
         int seconds = (int) TimeoutUtils.toSeconds(expireTime, timeUnit);
 
-        jedisService.getJedis().expire(key, seconds);
+        getJedis().expire(key, seconds);
     }
 
     @Override
-    public void delete(String key) {
-        jedisService.getJedis().del(key);
+    public void remove(String key) {
+        getJedis().del(key);
     }
 
     private void checkResult(String result) {
         if(!JedisConst.OK.equalsIgnoreCase(result)) {
             throw new RedisConfigException("operate failed!");
         }
+    }
+
+    private Jedis getJedis() {
+        return jedisService.getJedis();
     }
 
 }

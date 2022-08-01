@@ -38,7 +38,7 @@ public class SpringServiceTest {
         //3. 过期
         redisService.expire(key, 100, TimeUnit.SECONDS);
         //4. 删除
-        redisService.delete(key);
+        redisService.remove(key);
         Assert.assertNull(redisService.get(key));
     }
 

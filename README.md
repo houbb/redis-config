@@ -27,51 +27,62 @@ redis 的配置比较多样，每次都是重复拷贝，缺少统一规范。
 
 # 快速开始
 
-## core 
-
-### 引入
+## 引入
 
 ```xml
 <dependency>
     <group>com.github.houbb</group>
     <artifact>redis-config-core</artifact>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
-### jedis
+## 使用
+
+### 初始化
 
 ```java
-IJedisService simpleRedis = new SimpleJedisService("127.0.0.1", 6379);
-Jedis jedis = simpleRedis.getJedis();
+IRedisService redisService = JedisRedisServiceFactory.simple("127.0.0.1", 6379);
+```
 
+或者下面的池化方式：
+
+```java
+IRedisService redisService = JedisRedisServiceFactory.pooled("127.0.0.1", 6379);
+```
+
+### 使用
+
+```java
 //1. 设置
 final String key = "key";
 final String value = "123456";
-jedis.set(key, value);
-Assert.assertEquals("123456", jedis.get(key));
+redisService.set(key, value);
+
+//2. 获取
+Assert.assertEquals("123456", redisService.get(key));
+
+//3. 过期
+redisService.expire(key, 100, TimeUnit.SECONDS);
+
+//4. 删除
+redisService.remove(key);
+Assert.assertNull(redisService.get(key));
 ```
 
-当然，还可以通过池化的方式获取资源：
+# spring 整合
 
-```java
-IJedisService servcie = new PooledJedisService("127.0.0.1", 6379);
-Jedis jedis = servcie.getJedis();
-```
-
-## spring 整合
-
-### maven 引入
+## maven 引入
 
 ```xml
 <dependency>
     <group>com.github.houbb</group>
     <artifact>redis-config-spring</artifact>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
-### 代码配置
+## 代码配置
 
 指定 `@EnableRedisConfig` 注解即可。
 
@@ -83,7 +94,15 @@ public class SpringConfig {
 }
 ```
 
-### 使用入门
+## 配置说明
+
+| 配置 | 说明 | 默认值
+|:---|:---|:----|
+| redis.address | redis 地址 | 127.0.0.1 |
+| redis.port | redis 端口 | 6379 |
+| redis.password | redis 密码 | |
+
+## 使用入门
 
 直接注入 `SpringRedisService` 即可正常使用。
 
@@ -109,26 +128,26 @@ public class SpringServiceTest {
         //3. 过期
         redisService.expire(key, 100, TimeUnit.SECONDS);
         //4. 删除
-        redisService.delete(key);
+        redisService.remove(key);
         Assert.assertNull(redisService.get(key));
     }
 
 }
 ```
 
-## springboot 自动整合
+# springboot 自动整合
 
-### maven 引入
+## maven 引入
 
 ```xml
 <dependency>
     <group>com.github.houbb</group>
     <artifact>redis-config-springboot-starter</artifact>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
-### 使用 
+## 使用 
 
 同 spring
 

@@ -1,5 +1,6 @@
 package com.github.houbb.redis.config.spring.service;
 
+import com.github.houbb.redis.config.core.utils.TimeoutUtils;
 import com.github.houbb.redis.config.spring.config.RetryRedisTemplate;
 import com.github.houbb.redis.config.core.service.IRedisService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,20 @@ public class SpringRedisService implements IRedisService {
     }
 
     @Override
+    public void set(String key, String value, long expireMills) {
+        int seconds = (int) TimeoutUtils.toSeconds(expireMills, TimeUnit.MILLISECONDS);
+        retryRedisTemplate.opsForValueSet(key, value, seconds);
+    }
+
+    @Override
     public String get(String key) {
         return retryRedisTemplate.opsForValueGet(key);
+    }
+
+    @Override
+    public boolean contains(String key) {
+        String value = retryRedisTemplate.opsForValueGet(key);
+        return value != null;
     }
 
     @Override
@@ -33,7 +46,7 @@ public class SpringRedisService implements IRedisService {
     }
 
     @Override
-    public void delete(String key) {
+    public void remove(String key) {
         retryRedisTemplate.opsForValueDelete(key);
     }
 

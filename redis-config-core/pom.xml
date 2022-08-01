@@ -17,6 +17,11 @@
         <!--============================== INNER ==============================-->
         <dependency>
             <groupId>com.github.houbb</groupId>
+            <artifactId>common-cache-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.houbb</groupId>
             <artifactId>heaven</artifactId>
         </dependency>
         <dependency>

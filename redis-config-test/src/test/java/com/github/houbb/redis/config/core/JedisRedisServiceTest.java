@@ -1,13 +1,9 @@
 package com.github.houbb.redis.config.core;
 
-import com.github.houbb.redis.config.core.jedis.IJedisService;
-import com.github.houbb.redis.config.core.jedis.PooledJedisService;
-import com.github.houbb.redis.config.core.jedis.SimpleJedisService;
+import com.github.houbb.redis.config.core.factory.JedisRedisServiceFactory;
 import com.github.houbb.redis.config.core.service.IRedisService;
-import com.github.houbb.redis.config.core.service.JedisRedisService;
 import org.junit.Assert;
 import org.junit.Test;
-import redis.clients.jedis.Jedis;
 
 import java.util.concurrent.TimeUnit;
 
@@ -19,9 +15,8 @@ public class JedisRedisServiceTest {
 
     @Test
     public void simpleRedisTest() {
-        IJedisService simpleRedis = new SimpleJedisService("127.0.0.1", 6379);
+        IRedisService redisService = JedisRedisServiceFactory.simple("127.0.0.1", 6379);
 
-        IRedisService redisService = new JedisRedisService(simpleRedis);
         //1. 设置
         final String key = "key";
         final String value = "123456";
@@ -31,15 +26,14 @@ public class JedisRedisServiceTest {
         //3. 过期
         redisService.expire(key, 100, TimeUnit.SECONDS);
         //4. 删除
-        redisService.delete(key);
+        redisService.remove(key);
         Assert.assertNull(redisService.get(key));
     }
 
     @Test
     public void pooledRedisTest() {
-        IJedisService simpleRedis = new PooledJedisService("127.0.0.1", 6379);
+        IRedisService redisService = JedisRedisServiceFactory.pooled("127.0.0.1", 6379);
 
-        IRedisService redisService = new JedisRedisService(simpleRedis);
         //1. 设置
         final String key = "key";
         final String value = "123456";
@@ -49,7 +43,7 @@ public class JedisRedisServiceTest {
         //3. 过期
         redisService.expire(key, 100, TimeUnit.SECONDS);
         //4. 删除
-        redisService.delete(key);
+        redisService.remove(key);
         Assert.assertNull(redisService.get(key));
     }
 
