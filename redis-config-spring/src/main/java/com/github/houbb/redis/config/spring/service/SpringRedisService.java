@@ -50,4 +50,30 @@ public class SpringRedisService implements IRedisService {
         retryRedisTemplate.opsForValueDelete(key);
     }
 
+    @Override
+    public long ttl(String key) {
+        Long expireTime = retryRedisTemplate.getExpire(key, TimeUnit.MILLISECONDS);
+        if(expireTime == null) {
+            return -2;
+        }
+
+        return expireTime;
+    }
+
+    @Override
+    public void expireAt(String key, long unixTime) {
+        retryRedisTemplate.expire(key, unixTime, TimeUnit.MILLISECONDS);
+    }
+
+    @Override
+    public long expireAt(String key) {
+        long expireTime = this.ttl(key);
+        if(expireTime < 0) {
+            return expireTime;
+        }
+
+        long time = System.currentTimeMillis();
+        return time + expireTime;
+    }
+
 }

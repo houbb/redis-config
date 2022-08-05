@@ -59,6 +59,33 @@ public class JedisRedisService implements IRedisService {
         getJedis().del(key);
     }
 
+    @Override
+    public long ttl(String key) {
+        Long result =  getJedis().ttl(key);
+        if(result == null) {
+            return -2;
+        }
+
+        return result * 1000;
+    }
+
+    @Override
+    public void expireAt(String key, long unixTime) {
+        getJedis().expireAt(key, unixTime);
+    }
+
+    @Override
+    public long expireAt(String key) {
+        long ttl = ttl(key);
+        if(ttl <= 0) {
+            return ttl;
+        }
+
+        // 获取时间
+        long time = System.currentTimeMillis();
+        return time + ttl;
+    }
+
     private void checkResult(String result) {
         if(!JedisConst.OK.equalsIgnoreCase(result)) {
             throw new RedisConfigException("operate failed!");
