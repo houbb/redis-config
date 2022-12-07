@@ -39,6 +39,11 @@ public class JedisRedisService extends AbstractCommonCacheService implements IRe
     }
 
     @Override
+    public String set(String s, String s1, String s2, String s3, int i) {
+        return getJedis().set(s, s1, s2, s3, i);
+    }
+
+    @Override
     public String get(String key) {
         return getJedis().get(key);
     }

@@ -51,6 +51,26 @@ public class RetryRedisTemplate {
         }
     }
 
+    /**
+     * 执行回调
+     * @param redisCallback 回调
+     * @return 结果
+     * @param <T> 反省
+     * @since 1.5.0
+     */
+    public <T> T execute(RedisCallback<T> redisCallback) {
+        return template.execute(redisCallback);
+    }
+
+    /**
+     * 不存在，才设置
+     * @param key 键
+     * @param value 值
+     */
+    public void setIfAbsent(String key, String value) {
+        template.opsForValue().setIfAbsent(key, value);
+    }
+
     public String opsForValueGet(String key) {
         return opsForValueGet(key, 0);
     }

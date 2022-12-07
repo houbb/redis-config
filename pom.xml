@@ -12,7 +12,7 @@
     <groupId>com.github.houbb</groupId>
     <artifactId>redis-config</artifactId>
     <packaging>pom</packaging>
-    <version>1.3.0</version>
+    <version>1.4.0</version>
     <modules>
         <module>redis-config-core</module>
         <module>redis-config-spring</module>
@@ -42,7 +42,7 @@
         <aop.version>0.0.3</aop.version>
         <test.version>0.0.1</test.version>
         <id.version>0.0.5</id.version>
-        <common-cache.version>0.0.4</common-cache.version>
+        <common-cache.version>0.0.5</common-cache.version>
 
         <!--============================== OTHER ==============================-->
         <junit.version>4.12</junit.version>
@@ -78,16 +78,6 @@
                 <artifactId>common-cache-core</artifactId>
                 <version>${common-cache.version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.github.houbb</groupId>
-                <artifactId>id-api</artifactId>
-                <version>${id.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.houbb</groupId>
-                <artifactId>id-core</artifactId>
-                <version>${id.version}</version>
-            </dependency>
 
             <dependency>
                 <groupId>com.github.houbb</groupId>
@@ -98,11 +88,6 @@
                 <groupId>com.github.houbb</groupId>
                 <artifactId>log-integration</artifactId>
                 <version>${log-integration.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.houbb</groupId>
-                <artifactId>aop-core</artifactId>
-                <version>${aop.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.houbb</groupId>
@@ -120,11 +105,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter</artifactId>
                 <version>${spring-boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>fastjson</artifactId>
-                <version>${fastjson.version}</version>
             </dependency>
             <dependency>
                 <groupId>redis.clients</groupId>

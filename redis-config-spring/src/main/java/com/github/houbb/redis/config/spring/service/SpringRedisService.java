@@ -1,11 +1,16 @@
 package com.github.houbb.redis.config.spring.service;
 
 import com.github.houbb.common.cache.api.service.AbstractCommonCacheService;
+import com.github.houbb.redis.config.core.constant.JedisConst;
 import com.github.houbb.redis.config.core.utils.TimeoutUtils;
 import com.github.houbb.redis.config.spring.config.RetryRedisTemplate;
 import com.github.houbb.redis.config.core.service.IRedisService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.JedisCommands;
 
 import java.util.concurrent.TimeUnit;
 
@@ -28,6 +33,19 @@ public class SpringRedisService extends AbstractCommonCacheService implements IR
     public void set(String key, String value, long expireMills) {
         int seconds = (int) TimeoutUtils.toSeconds(expireMills, TimeUnit.MILLISECONDS);
         retryRedisTemplate.opsForValueSet(key, value, seconds);
+    }
+
+    @Override
+    public String set(final String key, final String value, final String nxx, final String pxx, final int expire) {
+        RedisCallback<String> callback = new RedisCallback<String>() {
+            @Override
+            public String doInRedis(RedisConnection connection) throws DataAccessException {
+                JedisCommands commands = (JedisCommands) connection.getNativeConnection();
+                return commands.set(key, value, nxx, pxx, expire);
+            }
+        };
+
+        return retryRedisTemplate.execute(callback);
     }
 
     @Override
