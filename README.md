@@ -33,7 +33,7 @@ redis 的配置比较多样，每次都是重复拷贝，缺少统一规范。
 <dependency>
     <group>com.github.houbb</group>
     <artifact>redis-config-core</artifact>
-    <version>1.1.0</version>
+    <version>1.3.0</version>
 </dependency>
 ```
 
@@ -78,7 +78,7 @@ Assert.assertNull(redisService.get(key));
 <dependency>
     <group>com.github.houbb</group>
     <artifact>redis-config-spring</artifact>
-    <version>1.1.0</version>
+    <version>1.3.0</version>
 </dependency>
 ```
 
@@ -143,7 +143,7 @@ public class SpringServiceTest {
 <dependency>
     <group>com.github.houbb</group>
     <artifact>redis-config-springboot-starter</artifact>
-    <version>1.1.0</version>
+    <version>1.3.0</version>
 </dependency>
 ```
 

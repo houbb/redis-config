@@ -3,8 +3,13 @@ package com.github.houbb.redis.config.spring.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisCluster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -323,4 +328,37 @@ public class RetryRedisTemplate {
             this.opsForSetAdd(key, value, i);
         }
     }
+
+
+    /**
+     * 执行脚本
+     * @param script 脚本
+     * @param keyCount 总数
+     * @param params 参数
+     * @return 结果
+     * @since 1.3.0
+     */
+    public Object eval(final String script, final int keyCount, final String... params) {
+        // 使用lua脚本删除redis中匹配value的key，可以避免由于方法执行时间过长而redis锁自动过期失效的时候误删其他线程的锁
+        // spring自带的执行脚本方法中，集群模式直接抛出不支持执行脚本的异常，所以只能拿到原redis的connection来执行脚本
+        RedisCallback<Object> callback = new RedisCallback<Object>() {
+            @Override
+            public Object doInRedis(RedisConnection connection) throws DataAccessException {
+                Object nativeConnection = connection.getNativeConnection();
+                // 集群模式和单机模式虽然执行脚本的方法一样，但是没有共同的接口，所以只能分开执行
+                // 集群模式
+                if (nativeConnection instanceof JedisCluster) {
+                    return ((JedisCluster) nativeConnection).eval(script, keyCount, params);
+                }
+                // 单机模式
+                else if (nativeConnection instanceof Jedis) {
+                    return ((Jedis) nativeConnection).eval(script, keyCount, params);
+                }
+                return null;
+            }
+        };
+
+        return template.execute(callback);
+    }
+
 }

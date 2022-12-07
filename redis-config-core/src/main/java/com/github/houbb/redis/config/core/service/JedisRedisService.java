@@ -1,5 +1,6 @@
 package com.github.houbb.redis.config.core.service;
 
+import com.github.houbb.common.cache.api.service.AbstractCommonCacheService;
 import com.github.houbb.heaven.util.common.ArgUtil;
 import com.github.houbb.redis.config.core.constant.JedisConst;
 import com.github.houbb.redis.config.core.exception.RedisConfigException;
@@ -15,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  * @author binbin.hou
  * @since 1.0.0
  */
-public class JedisRedisService implements IRedisService {
+public class JedisRedisService extends AbstractCommonCacheService implements IRedisService {
 
     private final IJedisService jedisService;
 
@@ -84,6 +85,11 @@ public class JedisRedisService implements IRedisService {
         // 获取时间
         long time = System.currentTimeMillis();
         return time + ttl;
+    }
+
+    @Override
+    public Object eval(String script, int keyCount, String... params) {
+        return getJedis().eval(script, keyCount, params);
     }
 
     private void checkResult(String result) {

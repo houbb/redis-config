@@ -1,5 +1,6 @@
 package com.github.houbb.redis.config.spring.service;
 
+import com.github.houbb.common.cache.api.service.AbstractCommonCacheService;
 import com.github.houbb.redis.config.core.utils.TimeoutUtils;
 import com.github.houbb.redis.config.spring.config.RetryRedisTemplate;
 import com.github.houbb.redis.config.core.service.IRedisService;
@@ -13,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  * @since 1.0.0
  */
 @Service
-public class SpringRedisService implements IRedisService {
+public class SpringRedisService extends AbstractCommonCacheService implements IRedisService {
 
     @Autowired
     private RetryRedisTemplate retryRedisTemplate;
@@ -74,6 +75,11 @@ public class SpringRedisService implements IRedisService {
 
         long time = System.currentTimeMillis();
         return time + expireTime;
+    }
+
+    @Override
+    public Object eval(String script, int keyCount, String... params) {
+        return retryRedisTemplate.eval(script, keyCount, params);
     }
 
 }
