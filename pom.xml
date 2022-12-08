@@ -18,6 +18,7 @@
         <module>redis-config-spring</module>
         <module>redis-config-springboot-starter</module>
         <module>redis-config-test</module>
+        <module>redis-config-test2</module>
     </modules>
 
     <properties>

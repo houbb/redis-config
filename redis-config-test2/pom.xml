@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>redis-config</artifactId>
+        <groupId>com.github.houbb</groupId>
+        <version>1.4.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>redis-config-test2</artifactId>
+
+    <dependencies>
+        <!--============================== SELF ==============================-->
+        <dependency>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>redis-config-springboot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>test-spring</artifactId>
+        </dependency>
+        <!--============================== OTHER ==============================-->
+
+    </dependencies>
+
+</project>
