@@ -1,10 +1,9 @@
 package com.github.houbb.redis.config.spring.service;
 
-import com.github.houbb.common.cache.api.service.AbstractCommonCacheService;
 import com.github.houbb.redis.config.core.constant.JedisConst;
+import com.github.houbb.redis.config.core.service.AbstractRedisService;
 import com.github.houbb.redis.config.core.utils.TimeoutUtils;
 import com.github.houbb.redis.config.spring.config.RetryRedisTemplate;
-import com.github.houbb.redis.config.core.service.IRedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
@@ -12,6 +11,7 @@ import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.JedisCommands;
 
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * @since 1.0.0
  */
 @Service
-public class SpringRedisService extends AbstractCommonCacheService implements IRedisService {
+public class SpringRedisService extends AbstractRedisService {
 
     @Autowired
     private RetryRedisTemplate retryRedisTemplate;

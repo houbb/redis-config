@@ -1,6 +1,5 @@
 package com.github.houbb.redis.config.core.service;
 
-import com.github.houbb.common.cache.api.service.AbstractCommonCacheService;
 import com.github.houbb.heaven.util.common.ArgUtil;
 import com.github.houbb.redis.config.core.constant.JedisConst;
 import com.github.houbb.redis.config.core.exception.RedisConfigException;
@@ -16,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  * @author binbin.hou
  * @since 1.0.0
  */
-public class JedisRedisService extends AbstractCommonCacheService implements IRedisService {
+public class JedisRedisService extends AbstractRedisService {
 
     private final IJedisService jedisService;
 
